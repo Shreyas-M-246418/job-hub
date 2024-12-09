@@ -29,9 +29,11 @@ const JobsPage = () => {
     'Machine Learning'
   ];
 
-  const handleLogout = () => {
-    logout();
-    navigate('/display-jobs');
+  const handleLogout = async () => {
+    const success = await logout();
+    if (success) {
+      navigate('/display-jobs');
+    }
   };
 
   const handleCreateJob = () => {
