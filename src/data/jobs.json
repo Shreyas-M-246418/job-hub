@@ -1,0 +1,19 @@
+{
+    "jobs": [
+      {
+        "id": 1,
+        "companyName": "Example Tech",
+        "location": "Remote",
+        "domain": "Full Stack",
+        "workType": "Remote",
+        "employmentType": "Full Time",
+        "userType": "Developer",
+        "title": "Senior Full Stack Developer",
+        "description": "Looking for an experienced full stack developer...",
+        "salaryRange": "$100k-$150k",
+        "applyLink": "https://example.com/apply",
+        "createdAt": "2024-03-15T10:00:00Z",
+        "createdBy": "Admin"
+      }
+    ]
+  }

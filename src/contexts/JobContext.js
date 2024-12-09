@@ -1,12 +1,21 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import jobsData from '../data/jobs.json';
+import fs from 'fs';
+import path from 'path';
 
 const JobContext = createContext();
 
 export const JobProvider = ({ children }) => {
-  const [jobs, setJobs] = useState(() => {
-    const savedJobs = localStorage.getItem('jobs');
-    return savedJobs ? JSON.parse(savedJobs) : [];
-  });
+  const [jobs, setJobs] = useState(jobsData.jobs);
+
+  const saveJobsToFile = (updatedJobs) => {
+    try {
+      const filePath = path.join(__dirname, '../data/jobs.json');
+      fs.writeFileSync(filePath, JSON.stringify({ jobs: updatedJobs }, null, 2));
+    } catch (error) {
+      console.error('Error saving jobs:', error);
+    }
+  };
 
   const addJob = (newJob) => {
     const jobWithId = {
@@ -14,29 +23,23 @@ export const JobProvider = ({ children }) => {
       id: Date.now(),
       createdAt: new Date().toISOString()
     };
-    setJobs(prevJobs => {
-      const updatedJobs = [...prevJobs, jobWithId];
-      localStorage.setItem('jobs', JSON.stringify(updatedJobs));
-      return updatedJobs;
-    });
+    const updatedJobs = [...jobs, jobWithId];
+    setJobs(updatedJobs);
+    saveJobsToFile(updatedJobs);
   };
 
   const updateJob = (jobId, updatedData) => {
-    setJobs(prevJobs => {
-      const updatedJobs = prevJobs.map(job => 
-        job.id === jobId ? { ...job, ...updatedData } : job
-      );
-      localStorage.setItem('jobs', JSON.stringify(updatedJobs));
-      return updatedJobs;
-    });
+    const updatedJobs = jobs.map(job => 
+      job.id === jobId ? { ...job, ...updatedData } : job
+    );
+    setJobs(updatedJobs);
+    saveJobsToFile(updatedJobs);
   };
 
   const deleteJob = (jobId) => {
-    setJobs(prevJobs => {
-      const updatedJobs = prevJobs.filter(job => job.id !== jobId);
-      localStorage.setItem('jobs', JSON.stringify(updatedJobs));
-      return updatedJobs;
-    });
+    const updatedJobs = jobs.filter(job => job.id !== jobId);
+    setJobs(updatedJobs);
+    saveJobsToFile(updatedJobs);
   };
 
   return (
