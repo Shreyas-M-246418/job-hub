@@ -132,7 +132,7 @@ const DisplayJobsPage = () => {
         <div className="search-bar">
           <input
             type="text"
-            placeholder="Search by title, skill, or company"
+            placeholder="Title/skill or Company"
             value={filters.title}
             onChange={(e) => handleFilterChange(e, 'title')}
             className="search-input"
@@ -144,121 +144,143 @@ const DisplayJobsPage = () => {
             onChange={(e) => handleFilterChange(e, 'location')}
             className="search-input"
           />
-          <div className="filter-group">
-            <div className="filter-buttons">
-              {['Fresher', 'Professional', 'Student'].map(type => (
-                <button
-                  key={type}
-                  className={`filter-chip ${filters.userType.includes(type.toLowerCase()) ? 'active' : ''}`}
-                  onClick={() => handleUserTypeChange({ target: { value: type.toLowerCase() } })}
-                >
-                  {type}
-                </button>
-              ))}
+          <div className="filter-dropdown">
+            <button className={`filter-button ${filters.userType.length > 0 ? 'has-selection' : ''}`}>
+              User Type {filters.userType.length > 0 && `(${filters.userType.length})`}
+            </button>
+            <div className="dropdown-content">
+              <label>
+                <input
+                  type="radio"
+                  name="userType"
+                  value="fresher"
+                  checked={filters.userType.includes('fresher')}
+                  onChange={(e) => handleUserTypeChange(e)}
+                />
+                Fresher
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="userType"
+                  value="professional"
+                  checked={filters.userType.includes('professional')}
+                  onChange={(e) => handleUserTypeChange(e)}
+                />
+                Professional
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="userType"
+                  value="student"
+                  checked={filters.userType.includes('student')}
+                  onChange={(e) => handleUserTypeChange(e)}
+                />
+                College Student
+              </label>
+              <button className="clear-filter" onClick={() => handleClearFilter('userType')}>
+                Clear
+              </button>
             </div>
           </div>
-        </div>
-
-        <div className="domain-filters">
-          <h3>Domain</h3>
-          <div className="filter-chips">
-            {domains.map(domain => (
-              <button
-                key={domain}
-                className={`filter-chip ${filters.domain.includes(domain) ? 'active' : ''}`}
-                onClick={() => handleDomainChange({ 
-                  target: { 
-                    value: domain,
-                    checked: !filters.domain.includes(domain)
-                  }
-                })}
-              >
-                {domain}
+          <div className="filter-dropdown">
+            <button className={`filter-button ${filters.domain.length > 0 ? 'has-selection' : ''}`}>
+              Domain {filters.domain.length > 0 && `(${filters.domain.length})`}
+            </button>
+            <div className="dropdown-content">
+              {domains.map(domain => (
+                <label key={domain}>
+                  <input
+                    type="checkbox"
+                    value={domain}
+                    checked={filters.domain.includes(domain)}
+                    onChange={(e) => handleDomainChange(e)}
+                  />
+                  {domain}
+                </label>
+              ))}
+              <button className="clear-filter" onClick={() => handleClearFilter('domain')}>
+                Clear
               </button>
-            ))}
+            </div>
           </div>
+          <button onClick={clearFilters} className="clear-all-btn">
+            clear all
+          </button>
         </div>
       </div>
-
+      
       <div className="main-content">
-        <aside className="filters-sidebar">
+        <div className="filters-sidebar">
           <div className="filter-section">
             <h3>Employment Type</h3>
             {['Full time', 'Internship', 'Part time'].map(type => (
-              <label key={type} className="filter-option">
+              <label 
+                key={type} 
+                className="employment-type-label"
+                data-type={type.toLowerCase()}
+              >
                 <input
                   type="checkbox"
+                  className="employment-type-checkbox"
+                  data-type={type.toLowerCase()}
                   value={type.toLowerCase()}
                   checked={filters.employmentType.includes(type.toLowerCase())}
-                  onChange={handleEmploymentTypeChange}
+                  onChange={(e) => handleEmploymentTypeChange(e)}
                 />
-                <span className="checkmark"></span>
-                <span>{type}</span>
+                {type}
               </label>
             ))}
           </div>
-
           <div className="filter-section">
             <h3>Work Type</h3>
-            {['Remote', 'On site', 'Hybrid'].map(type => (
-              <label key={type} className="filter-option">
+            {['On site', 'Remote', 'Hybrid', 'Field Work'].map(type => (
+              <label key={type}>
                 <input
                   type="checkbox"
                   value={type.toLowerCase()}
                   checked={filters.workType.includes(type.toLowerCase())}
-                  onChange={handleWorkTypeChange}
+                  onChange={(e) => handleWorkTypeChange(e)}
                 />
-                <span className="checkmark"></span>
-                <span>{type}</span>
+                {type}
               </label>
             ))}
           </div>
-        </aside>
-
-        <main className="jobs-container">
+        </div>
+        
+        <div className="jobs-container">
           <div className="jobs-header">
-            <div>
-              <h1>Available Jobs</h1>
-              <p className="results-count">
-                {filteredJobs.length} {filteredJobs.length === 1 ? 'job' : 'jobs'} found
-              </p>
-            </div>
-            <button onClick={clearFilters} className="clear-filters-btn">
-              Clear all filters
-            </button>
+            <h1>Available Jobs</h1>
+            <p className="results-count">
+              {filteredJobs.length} {filteredJobs.length === 1 ? 'job' : 'jobs'} found
+            </p>
           </div>
-
           <div className="jobs-grid">
             {filteredJobs.map((job) => (
               <div
                 key={job.id}
                 className="job-card"
+                data-employment-type={job.employmentType?.toLowerCase()}
                 onClick={() => handleJobClick(job)}
               >
-                <div className="job-card-header">
-                  <h3>{job.title}</h3>
-                  <span className={`badge ${job.employmentType?.toLowerCase()}`}>
-                    {job.employmentType}
-                  </span>
+                <div className="employment-type-badge" data-type={job.employmentType?.toLowerCase()}>
+                  {job.employmentType}
                 </div>
-                <div className="company-info">
-                  <span className="company-name">{job.companyName}</span>
-                  <span className="location">{job.location}</span>
-                </div>
-                <p className="job-description">{job.description}</p>
-                <div className="job-tags">
-                  <span className="tag work-type">{job.workType}</span>
-                  <span className="tag domain">{job.domain}</span>
+                <h3>{job.title}</h3>
+                <p>{job.description}</p>
+                <div className="job-details">
+                  {job.location && <span className="location">{job.location}</span>}
+                  {job.salary && <span className="salary">{job.salary}</span>}
                 </div>
               </div>
             ))}
           </div>
-        </main>
+          {showFullScreen && selectedJob && (
+            <JobDetails job={selectedJob} onClose={handleCloseFullScreen} />
+          )}
+        </div>
       </div>
-      
-      {showFullScreen && selectedJob && (
-        <JobDetails job={selectedJob} onClose={handleCloseFullScreen} />
-      )}
     </div>
   );
 };

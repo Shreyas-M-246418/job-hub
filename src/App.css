@@ -1,15 +1,22 @@
 .app-container {
-  min-height: 100vh;
-  background-color: #f5f5f5;
+  width: 100%;
+  margin-top: 64px;
+  padding: 0;
 }
 
 .top-navbar {
-  background: white;
-  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 1rem 2rem;
+  background-color: #001529;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 64px;
+  box-sizing: border-box;
 }
 
 .nav-left {
@@ -18,16 +25,17 @@
 }
 
 .nav-brand {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
+  display: flex;
+  align-items: center;
+  color: white;
   text-decoration: none;
+  font-size: 1.25rem;
+  font-weight: 500;
 }
 
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 1rem;
 }
 
 .nav-link {
@@ -36,21 +44,45 @@
   padding: 0.5rem 1rem;
 }
 
-.login-button, .post-job-button {
-  padding: 0.5rem 1.5rem;
-  background: #4285f4;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
+.login-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
   text-decoration: none;
+  font-size: 0.9rem;
+  transition: background-color 0.3s;
+  border: none;
+  cursor: pointer;
+  color: white;
 }
 
-.post-job-button {
-  background: #34a853;
+/* Specific styles for login button */
+button.login-button {
+  background-color: #4285f4; /* Google Blue */
 }
 
-.login-button:hover, .post-job-button:hover {
-  opacity: 0.9;
+button.login-button:hover {
+  background-color: #357abd; /* Darker blue on hover */
+}
+
+/* Specific styles for logout button */
+a.login-button {
+  background-color: #dc3545; /* Bootstrap Red */
+}
+
+a.login-button:hover {
+  background-color: #c82333; /* Darker red on hover */
+}
+
+.nav-github-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.nav-logo {
+  height: 40px;
+  width: auto;
 }
