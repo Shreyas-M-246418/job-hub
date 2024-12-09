@@ -32,7 +32,7 @@ const JobsPage = () => {
   const handleLogout = async () => {
     const success = await logout();
     if (success) {
-      navigate('/display-jobs');
+      navigate('/');
     }
   };
 
