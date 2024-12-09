@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useJobs } from '../contexts/JobContext';
 import { useAuth } from '../contexts/AuthContext';
+import { Plus } from 'lucide-react';
 import '../styles/JobsPage.css';
 
 const JobsPage = () => {
@@ -303,7 +304,7 @@ const JobsPage = () => {
       </div>
 
       <button onClick={navigateToHire} className="floating-add-button">
-        <Plus size={36} />
+        <FaPlus size={24} />
       </button>
     </div>
   );
