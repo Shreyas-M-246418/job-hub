@@ -1,17 +1,21 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import jobsData from '../data/jobs.json';
-import fs from 'fs';
-import path from 'path';
+import React, { createContext, useContext, useState } from 'react';
 
 const JobContext = createContext();
 
 export const JobProvider = ({ children }) => {
-  const [jobs, setJobs] = useState(jobsData.jobs);
-
-  const saveJobsToFile = (updatedJobs) => {
+  const [jobs, setJobs] = useState(() => {
     try {
-      const filePath = path.join(__dirname, '../data/jobs.json');
-      fs.writeFileSync(filePath, JSON.stringify({ jobs: updatedJobs }, null, 2));
+      const savedJobs = localStorage.getItem('jobs');
+      return savedJobs ? JSON.parse(savedJobs) : [];
+    } catch (error) {
+      console.error('Error loading jobs:', error);
+      return [];
+    }
+  });
+
+  const saveJobs = (updatedJobs) => {
+    try {
+      localStorage.setItem('jobs', JSON.stringify(updatedJobs));
     } catch (error) {
       console.error('Error saving jobs:', error);
     }
@@ -25,7 +29,7 @@ export const JobProvider = ({ children }) => {
     };
     const updatedJobs = [...jobs, jobWithId];
     setJobs(updatedJobs);
-    saveJobsToFile(updatedJobs);
+    saveJobs(updatedJobs);
   };
 
   const updateJob = (jobId, updatedData) => {
@@ -33,13 +37,13 @@ export const JobProvider = ({ children }) => {
       job.id === jobId ? { ...job, ...updatedData } : job
     );
     setJobs(updatedJobs);
-    saveJobsToFile(updatedJobs);
+    saveJobs(updatedJobs);
   };
 
   const deleteJob = (jobId) => {
     const updatedJobs = jobs.filter(job => job.id !== jobId);
     setJobs(updatedJobs);
-    saveJobsToFile(updatedJobs);
+    saveJobs(updatedJobs);
   };
 
   return (
@@ -56,3 +60,5 @@ export const useJobs = () => {
   }
   return context;
 };
+
+export default JobContext;
