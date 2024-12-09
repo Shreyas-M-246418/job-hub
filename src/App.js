@@ -17,7 +17,7 @@ const Navigation = () => {
   return (
     <nav className="top-navbar">
       <div className="nav-left">
-      <a href="/display-jobs" className="nav-brand">
+      <a href="/" className="nav-brand">
           <img src="/jobhub-logo.jpg" alt="JobHub" className="nav-logo" />
         </a>
       </div>

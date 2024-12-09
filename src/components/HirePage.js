@@ -40,7 +40,7 @@ const HirePage = () => {
       <div className="hire-card">
         <div className="hire-card-header">
           <h2>Creating New Job</h2>
-          <button className="close-button" onClick={() => navigate('/')}>
+          <button className="close-button" onClick={() => navigate('/jobs')}>
             ×
           </button>
         </div>
