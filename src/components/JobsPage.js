@@ -304,7 +304,7 @@ const JobsPage = () => {
       </div>
 
       <button onClick={navigateToHire} className="floating-add-button">
-        <FaPlus size={24} />
+        <Plus size={36} />
       </button>
     </div>
   );
